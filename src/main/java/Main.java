@@ -1,6 +1,7 @@
-import javafx.beans.binding.StringBinding;
+
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
@@ -11,37 +12,35 @@ public class Main {
 
         try {
 
-            Scanner sc = new Scanner(System.in);
-            Process proc = new ProcessBuilder(sc.next()).start();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            BufferedReader errorReader = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-
-
             StringBuilder sb = new StringBuilder();
+            Scanner sc = new Scanner(System.in);
+            String command = sc.next();
+            String[] commands = new String[]{"/bin/sh", "-c", command};
+            try {
+                Process proc = new ProcessBuilder(commands).start();
+                BufferedReader stdInput = new BufferedReader(new
+                        InputStreamReader(proc.getInputStream()));
 
-            String s;
-            while ((s = reader.readLine()) != null) {
-                sb.append(s);
-                sb.append("\n");
+                BufferedReader stdError = new BufferedReader(new
+                        InputStreamReader(proc.getErrorStream()));
+
+                String s = null;
+                while ((s = stdInput.readLine()) != null) {
+                    sb.append(s);
+                    sb.append("\n");
+                }
+
+                while ((s = stdError.readLine()) != null) {
+                    sb.append(s);
+                    sb.append("\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            while ((s = errorReader.readLine()) != null) {
-                sb.append(s);
-                sb.append("\n");
-            }
 
-            reader.close();
-
-        }catch (Exception e){
-
+        } catch (Exception e) {
             e.printStackTrace();
-
         }
-
-
     }
-
-
-
 }
