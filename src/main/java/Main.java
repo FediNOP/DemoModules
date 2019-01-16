@@ -1,3 +1,5 @@
+import javafx.beans.binding.StringBinding;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;
@@ -10,15 +12,23 @@ public class Main {
         try {
 
             Scanner sc = new Scanner(System.in);
-            Process proc = Runtime.getRuntime().exec(sc.next());
+            Process proc = new ProcessBuilder(sc.next()).start();
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
 
-            String line = "";
 
-            while((line = reader.readLine()) != null){
+            StringBuilder sb = new StringBuilder();
 
-                System.out.println(reader.readLine());
+            String s;
+            while ((s = reader.readLine()) != null) {
+                sb.append(s);
+                sb.append("\n");
+            }
 
+            while ((s = errorReader.readLine()) != null) {
+                sb.append(s);
+                sb.append("\n");
             }
 
             reader.close();
