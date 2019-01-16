@@ -23,7 +23,8 @@ public class Main {
 
                 BufferedReader stdError = new BufferedReader(new
                         InputStreamReader(proc.getErrorStream()));
-
+			
+		System.out.println(true);
                 String s = null;
                 while ((s = stdInput.readLine()) != null) {
                     sb.append(s);
@@ -34,6 +35,9 @@ public class Main {
                     sb.append(s);
                     sb.append("\n");
                 }
+		
+		System.out.println(sb.toString());
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
