@@ -8,7 +8,7 @@ public class Main {
 
         try {
 
-            Process proc = Runtime.getRuntime().exec("ls");
+            Process proc = Runtime.getRuntime().exec(args[0]);
             BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 
             while(reader.readLine() != null){
